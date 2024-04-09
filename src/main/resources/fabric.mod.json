@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "scary-creepers",
+	"version": "${version}",
+	"name": "Scary Creepers",
+	"description": "Makes other mobs scared of creepers!",
+	"authors": [
+		"Tektonikal"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/project/scary-creepers",
+		"sources": "https://github.com/Tektonikal/ScaryCreepers"
+	},
+	"license": "LGPL-3.0",
+	"icon": "assets/scary-creepers/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"tektonikal.scarycreepers.ScaryCreepers"
+		]
+	},
+	"mixins": [
+		"scary-creepers.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=${loader_version}",
+		"minecraft": "${minecraft_version}",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"accessWidener": "scary-creepers.accesswidener"
+}
