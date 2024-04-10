@@ -15,23 +15,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.EnumSet;
 
 import static tektonikal.scarycreepers.ScaryCreepers.*;
+import static tektonikal.scarycreepers.ScaryCreepers.FLEE_DISTANCE;
 
 public class FleeExplodingCreeperGoal extends Goal {
     protected final PathAwareEntity mob;
-    private final double slowSpeed;
-    private final double fastSpeed;
-    protected final float fleeDistance;
     @Nullable
     protected Path fleePath;
     protected final EntityNavigation fleeingEntityNavigation;
     private MobEntity targetEntity;
 
 
-    public FleeExplodingCreeperGoal(PathAwareEntity mob, float distance, double slowSpeed, double fastSpeed) {
+    public FleeExplodingCreeperGoal(PathAwareEntity mob) {
         this.mob = mob;
-        this.fleeDistance = distance;
-        this.slowSpeed = slowSpeed;
-        this.fastSpeed = fastSpeed;
         this.fleeingEntityNavigation = mob.getNavigation();
         this.setControls(EnumSet.of(Control.MOVE));
     }
@@ -61,7 +56,7 @@ public class FleeExplodingCreeperGoal extends Goal {
     }
     private MobEntity getClosestCreeper() {
         CreeperEntity temp = null;
-        for(Entity e : mob.getWorld().getOtherEntities(mob, new Box(mob.getBlockPos()).expand(fleeDistance))){
+        for(Entity e : mob.getWorld().getOtherEntities(mob, new Box(mob.getBlockPos()).expand(this.mob.getWorld().getGameRules().getInt(FLEE_DISTANCE)))){
             if(e instanceof CreeperEntity){
                 if(((CreeperEntity)e).currentFuseTime > 0){
                     if(temp == null){
@@ -81,7 +76,7 @@ public class FleeExplodingCreeperGoal extends Goal {
     }
 
     public void start() {
-        this.fleeingEntityNavigation.startMovingAlong(this.fleePath, this.slowSpeed);
+        this.fleeingEntityNavigation.startMovingAlong(this.fleePath, 1);
     }
 
     public void stop() {
@@ -89,10 +84,10 @@ public class FleeExplodingCreeperGoal extends Goal {
     }
 
     public void tick() {
-        if (this.mob.squaredDistanceTo(this.targetEntity) < 49.0) {
+        if (this.mob.distanceTo(this.targetEntity) < this.mob.getWorld().getGameRules().getInt(FLEE_DISTANCE)) {
             this.mob.getNavigation().setSpeed(this.mob.getWorld().getGameRules().get(RUN_SPEED).get());
         } else {
-            this.mob.getNavigation().setSpeed(this.slowSpeed);
+            this.mob.getNavigation().setSpeed(1);
         }
 
     }

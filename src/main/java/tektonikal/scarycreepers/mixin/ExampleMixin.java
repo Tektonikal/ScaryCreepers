@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import tektonikal.scarycreepers.FleeExplodingCreeperGoal;
 
-import static tektonikal.scarycreepers.ScaryCreepers.RUN_SPEED;
 
 @Mixin(MobEntity.class)
 public abstract class ExampleMixin extends LivingEntity implements Targeter {
@@ -27,7 +26,7 @@ public abstract class ExampleMixin extends LivingEntity implements Targeter {
 	@Inject(method = "<init>", at = @At("TAIL"))
 	private void inject(CallbackInfo ci){
 		if((Object)this instanceof PathAwareEntity){
-			this.goalSelector.add(2, new FleeExplodingCreeperGoal((PathAwareEntity) (MobEntity)(Object)this, 5.0F,1.0f, this.getWorld().getGameRules().get(RUN_SPEED).get()));
+			this.goalSelector.add(2, new FleeExplodingCreeperGoal((PathAwareEntity) (MobEntity)(Object)this));
 		}
 	}
 }
